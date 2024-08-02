@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Sharp-Crested Rectangular Compound Weir Flow Rate Calculation 
-% Yildiz and Uijttewaal (2024) DOI:
+% Reference: Yildiz Burhan and Uijttewaal Wim S.J. (2024) 
+% Estimation of Discharge Coefficients for Free-Flowing Compound Weirs with Upstream Horizontal Flow Contraction, DOI:
 % All lenghts are in meters, flow rates in m^3/s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -64,7 +65,7 @@ for i=1:M
     sumQ(i)=sum(Q1(i,:)); % Total flow rate over compound weir (Uncorrected yet)
     Qd(i)= stDev(i)/(N*b*(9.81^0.5)*(hu(i)^1.5)); % Qd* calculation Eqn. (11)
     k=2; % CL iteration matrix column starting number
-    CL(i,k)=1.01-16.22*Qd(i); % Eqn 13 for the first element in CL convergence matrix
+    CL(i,k)=0.99-16.22*Qd(i); % Eqn 13 for the first element in CL convergence matrix
     tol=0.0001; % Allowed tolerance in CL convergence
     % CL iteration is applied in the while loop given below
     while abs(CL(i,k)-CL(i,k-1))>tol
@@ -72,7 +73,7 @@ for i=1:M
         stDev(i)=std(Q1_update(i,:),1); % standard deviation of the flow rates at each notch
         sumQ(i)=sum(Q1_update(i,:)); % Total flow rate over compound weir (intermediate step)
         Qd(i)= stDev(i)/(N*b*(9.81^0.5)*(hu(i)^1.5)); % Qd* calculation Eqn. (11)
-        CL(i,k+1)=1.01-16.22*Qd(i); % Eqn. (13)
+        CL(i,k+1)=0.99-16.22*Qd(i); % Eqn. (13)
         k=k+1;
     end
 end
